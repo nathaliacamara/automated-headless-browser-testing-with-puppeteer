@@ -4,23 +4,34 @@ const puppeteer = require('puppeteer')
 const expect = require('chai').expect
 
 describe('My First Puppeteer Test', () => {
-    it(' should launch the browser', async function() {
 
+    let browser
+    let page
 
-    const browser = await puppeteer.launch({
-    
-    headless: true,  
-    args: ['--disable-notifications'], 
-    sloMo:10
-    
+    before(async function(){
+        browser= await puppeteer.launch({
+            
+            headless: true,  
+            args: ['--disable-notifications'], 
+            sloMo:10
+        })
+
+        page = await browser.newPage()
+        await page.setDefaultTimeout(10000) // set default timeouts 
+        await page.setDefaultNavigationTimeout(20000) // set default timeouts 
+
+    }) 
+
+    after (async function(){
+        await browser.close()
+        
     })
 
-    const page = await browser.newPage()
-    await page.setDefaultTimeout(10000) // set default timeouts 
-    await page.setDefaultNavigationTimeout(20000) // set default timeouts 
+       
 
+    it ('should launch the browser', async function(){
     
-    /* Go Back & Forward 
+    // Go Back & Forward 
     
     await page.goto('https://example.com/')
     await page.waitForSelector('h1')
@@ -30,7 +41,7 @@ describe('My First Puppeteer Test', () => {
     await page.waitForSelector('h1')
     await page.goForward()
     await page.waitForSelector('h1')
-    */
+    })
  
     // Inputs
     //await page.goto('https://devexpress.github.io/testcafe/example/')
@@ -75,7 +86,7 @@ describe('My First Puppeteer Test', () => {
 
     // keyboard press simulation
 
-    await page.goto('http://zero.webappsecurity.com/')
+    await page.goto('http://zero.webappsecurity.com/index.html')
     
     /*await page.waitForSelector('#searchTerm')
     await page.type('#searchTerm', 'Hello World')
@@ -84,16 +95,20 @@ describe('My First Puppeteer Test', () => {
     // Element Not exist
     await page.waitForSelector('#signin_button')
     await page.click('#signin_button')
-    await page.waitFor(() => !document.querySelector('#signin_button')
-    await page.waitForSelector('#signin_button',{ hidden: true})
-
-
-    await browser.close()
-
-
+    await page.waitFor(() => !document.querySelector('#signin_button'))
+    await page.waitForSelector('#signin_button',
+    {
+         hidden: true
+    
+    
     })
 
 
-
-
+ 
 })
+
+
+
+
+
+
